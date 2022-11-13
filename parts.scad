@@ -1,3 +1,4 @@
+
 module ota_adapter(height, diameter, outer_diameter, offset, scale = 0.8) {
     translate([0, 0, offset]) {
         difference() {
@@ -20,7 +21,7 @@ module panel_cover(height, diameter, inner_diameter, thickness, offset) {
             top_rounded_cylinder(height, diameter/2, 10);
 
             union(){           
-                // inner cutout
+                // inside cutout
                 translate([0, 0, -thickness])
                     top_rounded_cylinder(height, diameter/2 - thickness, 10);
                 
@@ -51,7 +52,7 @@ module glue_stubs(x, z, width = 2) {
             cylinder(h = width, r = width);
 }
 
-// N - sided polygon 
+// N - sided 3d polygon 
 module ngon3d(n, h, r) {
   linear_extrude(height=h)
     circle(r=r, $fn=n);
@@ -63,13 +64,6 @@ module ring(width, height, diameter) {
     translate([diameter/2,0,0])
       square(width, height);
 }    
-
-module rounded_cylinder(h,r,n) {
-  rotate_extrude(convexity=1) {
-    offset(r=n) offset(delta=-n) square([r,h]);
-    square([n,h]);
-  }
-}
 
 module top_rounded_cylinder(h,r,n) {
   rotate_extrude(convexity=1) {
