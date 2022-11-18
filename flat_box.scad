@@ -19,7 +19,7 @@ adapter_height = 40;
 adapter_sides = 8;
 
 // Wall thickness
-thickness = 2;
+thickness = 4;
 
 // Light Panel measurements
 panel_diameter = 163;
@@ -38,4 +38,4 @@ panel_cover_height = panel_height + thickness;
 // Remove the '*' to render the part
 *ota_adapter(adapter_height, adapter_diameter, adapter_sides, panel_cover_diameter, panel_cover_height + thickness);
 *panel_cover(height = panel_cover_height, diameter = panel_cover_diameter, inner_diameter = adapter_diameter, thickness = thickness, offset = thickness, cable_width = cable_width, cable_height = cable_height);
-*panel_base(panel_cover_diameter, cable_width = 23);
+panel_base(panel_cover_diameter, height = thickness, cable_width = cable_width);

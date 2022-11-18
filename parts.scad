@@ -22,25 +22,25 @@ module panel_cover(height, diameter, inner_diameter, thickness, offset, cable_wi
             union(){           
                 // inside cutout
                 translate([0, 0, -thickness])
-                    cylinder(h = height, d = diameter - thickness);
+                    cylinder(h = height, d = diameter - thickness * 2);
                 
                 // guide hole cutouts
-                glue_stubs(inner_diameter, height - thickness);
+                #glue_stubs(inner_diameter, height - thickness / 2);
                 
                 // top cutout
-                cylinder(h = height + thickness, d = inner_diameter);
+                cylinder(h = height + thickness, d = inner_diameter - thickness);
                 
                 // Cable notch
-                translate([0, diameter / 2 - thickness / 2, thickness])
-                  cube([cable_width,cable_height,thickness * 2], center = true);
+                translate([0, (diameter - thickness) / 2, thickness /2])
+                  cube([cable_width, thickness * 2, cable_height], center = true);
             }
         }
 }
 
-module panel_base(diameter, height = 2, cable_width) {
+module panel_base(diameter, height, cable_width) {
     translate([0, 0, height])
         difference() {
-            ring(height, height, diameter - height);
+            ring(height, height, diameter - height * 2);
             translate([0, diameter/2, height])
                 cube(cable_width, center = true);
         }
