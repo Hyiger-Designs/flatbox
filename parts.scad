@@ -1,16 +1,25 @@
 
-module ota_adapter(height, diameter, sides, outer_diameter, offset, scale = 0.8) {
+module ota_adapter(height, diameter, sides, outer_diameter, offset, scale = .8, text = "") {
     translate([0, 0, offset]) {
         difference() {
             scale([scale, scale, 1])
                 ngon3d(sides, height, (outer_diameter / 2)); 
             
-            translate([0, 0, -height / 2])
-                cylinder(h = height * 2, r = diameter / 2); 
+            union() {
+                translate([0, 0, -height / 2])
+                    cylinder(h = height * 2, r = diameter / 2); 
+                
+                font_size = 5;
+                translate([0,(outer_diameter / 2) * scale - font_size * 2, height - 2])
+                    rotate([180,180.0])
+                        label(text, font_size, 2);
+            }
         }
         
         // guide stubs for gluing 
         glue_stubs(x = diameter, z = -1.5, d = 1.5);
+        
+
     }
 }
 
@@ -20,17 +29,16 @@ module panel_cover(height, diameter, inner_diameter, thickness, offset, cable_wi
             cylinder(h = height, d = diameter);
 
             union(){           
-                // inside cutout
                 translate([0, 0, -thickness])
                     cylinder(h = height, d = diameter - thickness * 2);
                 
                 // guide hole cutouts
-                #glue_stubs(inner_diameter, height - thickness / 2);
+                glue_stubs(inner_diameter, height - thickness / 2);
                 
                 // top cutout
                 cylinder(h = height + thickness, d = inner_diameter - thickness);
                 
-                // Cable notch
+                // cable notch
                 translate([0, (diameter - thickness) / 2, thickness /2])
                   cube([cable_width, thickness * 2, cable_height], center = true);
             }
@@ -40,12 +48,20 @@ module panel_cover(height, diameter, inner_diameter, thickness, offset, cable_wi
 module panel_base(diameter, height, cable_width) {
     translate([0, 0, height])
         difference() {
-            ring(height, height, diameter - height * 2);
+            ring(height, height/2, diameter - height * 2);
             translate([0, diameter/2, height])
                 cube(cable_width, center = true);
         }
     
     cylinder(h = height, d = diameter);
+}
+
+// Utility Functions
+
+module label(string, size, height, font = "Liberation Sans", halign = "center", valign = "center") {
+    linear_extrude(height) {
+        text(text=string, size=size, font=font, halign = halign, valign = valign, $fn = 64);
+    }
 }
 
 // Posts or holes to aid in aligning parts for gluing
