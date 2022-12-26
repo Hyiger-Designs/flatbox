@@ -12,17 +12,17 @@ module ota_adapter(height, diameter, sides, outer_diameter, offset, scale = .8, 
                 font_size = 5;
                 translate([0,(outer_diameter / 2) * scale - font_size * 2, height - 2])
                     rotate([180,180.0])
-                        label(text, font_size, 2);
+                        label(text, font_size, 5);
             }
         }
         
         // guide stubs for gluing 
-        glue_stubs(x = diameter, z = -1.5, d = 1.5);
+        glue_stubs(x = diameter, z = -2, h = 4);
         
 
     }
 }
-
+ 
 module panel_cover(height, diameter, inner_diameter, thickness, offset, cable_width, cable_height) {
     translate([0, 0, offset])
         difference() {
@@ -33,7 +33,7 @@ module panel_cover(height, diameter, inner_diameter, thickness, offset, cable_wi
                     cylinder(h = height, d = diameter - thickness * 2);
                 
                 // guide hole cutouts
-                glue_stubs(inner_diameter, height - thickness / 2);
+                glue_stubs(x = inner_diameter, z = - thickness + height/2, h = height + 1);
                 
                 // top cutout
                 cylinder(h = height + thickness, d = inner_diameter - thickness);
@@ -65,11 +65,11 @@ module label(string, size, height, font = "Liberation Sans", halign = "center", 
 }
 
 // Posts or holes to aid in aligning parts for gluing
-module glue_stubs(x, z, d = 2) { 
+module glue_stubs(x, z, h = 2, d = 2) { 
     stub_x = x / 2 + d * 2;
     for (x1= [-stub_x, stub_x])
         translate([x1, 0, z])
-            cylinder(h = d, r = d);
+            cylinder(h = h, r = d);
 }
 
 // N - sided 3d polygon 
