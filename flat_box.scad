@@ -1,4 +1,4 @@
-/*
+ /*
 Case and OTA adapter for an Ellumiglow round EL panel: 
 https://www.ellumiglow.com/electroluminescence/astrophotography
 
@@ -40,7 +40,7 @@ panel_cover_height = panel_height + thickness;
 // Remove the '*' to render the part
 
 // Infill: 10%
-*ota_adapter(adapter_height, adapter_diameter, adapter_sides, panel_cover_diameter, panel_cover_height + thickness, text = adapter_text);
+ota_adapter(adapter_height, adapter_diameter, adapter_sides, panel_cover_diameter, panel_cover_height + thickness, text = adapter_text);
 
 // Infill: 20%
 panel_cover(height = panel_cover_height, diameter = panel_cover_diameter, inner_diameter = adapter_diameter, thickness = thickness, offset = thickness, cable_width = cable_width, cable_height = cable_height);
