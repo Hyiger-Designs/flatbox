@@ -1,5 +1,5 @@
 
-module ota_adapter(height, diameter, sides, outer_diameter, offset, scale = .8, text = "") {
+module ota_adapter(height, diameter, sides, outer_diameter, offset, scale = 0.8, text = "") {
     translate([0, 0, offset]) {
         difference() {
             scale([scale, scale, 1])
@@ -18,8 +18,6 @@ module ota_adapter(height, diameter, sides, outer_diameter, offset, scale = .8, 
         
         // guide stubs for gluing 
         stubs(x = diameter, z = -2, h = 4);
-        
-
     }
 }
  
@@ -48,11 +46,11 @@ module panel_cover(height, diameter, inner_diameter, thickness, offset, cable_wi
         translate([0, diameter / 2 - thickness - 0.5, thickness])
             rotate([0,0,90])
                 difference() {
-                    linear_extrude(7)
-                        iso_trapazoid(16,26,26);
+                    linear_extrude(cable_height + thickness)
+                        iso_trapazoid(16, cable_width + thickness * 2, 26);
                     translate([-1,0,-2])
-                        linear_extrude(7)
-                            iso_trapazoid(12,22,28);
+                        linear_extrude(cable_height + thickness)
+                            iso_trapazoid(12, cable_width, 28);
                 }
 }
 
@@ -67,13 +65,13 @@ module panel_base(diameter, height, cable_width) {
     cylinder(h = height, d = diameter);
         
     // bottom cable cover
-    translate([0, diameter/2 - 2.5, 0])
+    translate([0, diameter / 2 - 2.5, 0])
         rotate([0,0,90])
             linear_extrude(2)
-                iso_trapazoid(16,26,26);
+                iso_trapazoid(16, cable_width + 4, 26);
 }
 
-// Utility Functions
+// Utility Modules
 
 module label(string, size, height, font = "Liberation Sans", halign = "center", valign = "center") {
     linear_extrude(height) {
@@ -84,7 +82,7 @@ module label(string, size, height, font = "Liberation Sans", halign = "center", 
 // Posts or holes to aid in aligning parts for gluing
 module stubs(x, z, h = 2, d = 2) { 
     stub_x = x / 2 + d * 2;
-    for (x1= [-stub_x, stub_x])
+    for (x1 = [-stub_x, stub_x])
         translate([x1, 0, z])
             cylinder(h = h, r = d);
 }
