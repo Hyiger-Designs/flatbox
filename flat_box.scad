@@ -47,4 +47,4 @@ panel_cover(height = panel_cover_height, diameter = panel_cover_diameter, inner_
 
 // The base can be press fit against the panel cover
 // Infill: 20%
-*panel_base(diameter = panel_cover_diameter, height = thickness, cable_width = cable_width);
+panel_base(diameter = panel_cover_diameter, height = thickness, cable_width = cable_width);

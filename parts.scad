@@ -17,7 +17,7 @@ module ota_adapter(height, diameter, sides, outer_diameter, offset, scale = .8, 
         }
         
         // guide stubs for gluing 
-        glue_stubs(x = diameter, z = -2, h = 4);
+        stubs(x = diameter, z = -2, h = 4);
         
 
     }
@@ -33,16 +33,27 @@ module panel_cover(height, diameter, inner_diameter, thickness, offset, cable_wi
                     cylinder(h = height, d = diameter - thickness * 2);
                 
                 // guide hole cutouts
-                glue_stubs(x = inner_diameter, z = - thickness + height/2, h = height + 1, d = 2.2);
+                stubs(x = inner_diameter, z = - thickness + height/2, h = height + 1, d = 2.2);
                 
                 // top cutout
                 cylinder(h = height + thickness, d = inner_diameter - thickness);
                 
-                // cable notch
-                translate([0, (diameter - thickness) / 2, thickness /2])
+                // cable opening
+                translate([0, (diameter - thickness) / 2, thickness / 2 + 1.5])
                   cube([cable_width, thickness * 2, cable_height], center = true);
             }
         }
+        
+        // top cable cover
+        translate([0, diameter / 2 - thickness - 0.5, thickness])
+            rotate([0,0,90])
+                difference() {
+                    linear_extrude(7)
+                        iso_trapazoid(16,26,26);
+                    translate([-1,0,-2])
+                        linear_extrude(7)
+                            iso_trapazoid(12,22,28);
+                }
 }
 
 module panel_base(diameter, height, cable_width) {
@@ -54,6 +65,12 @@ module panel_base(diameter, height, cable_width) {
         }
     
     cylinder(h = height, d = diameter);
+        
+    // bottom cable cover
+    translate([0, diameter/2 - 2.5, 0])
+        rotate([0,0,90])
+            linear_extrude(2)
+                iso_trapazoid(16,26,26);
 }
 
 // Utility Functions
@@ -65,7 +82,7 @@ module label(string, size, height, font = "Liberation Sans", halign = "center", 
 }
 
 // Posts or holes to aid in aligning parts for gluing
-module glue_stubs(x, z, h = 2, d = 2) { 
+module stubs(x, z, h = 2, d = 2) { 
     stub_x = x / 2 + d * 2;
     for (x1= [-stub_x, stub_x])
         translate([x1, 0, z])
@@ -85,10 +102,8 @@ module ring(width, height, diameter) {
     }
 }      
 
-module top_rounded_cylinder(h,r,n) {
-  rotate_extrude(convexity=1) {
-    offset(r=n) offset(delta=-n) square([r,h]);
-    square([r/2,h]);
-    square([r,h/2]);
-  }
+module iso_trapazoid(short, long, length, center = true) {
+    translate([0, center ? -long/2 : 0, 0])
+        polygon(points=[[0,0], [length,long / 2 - short / 2], [length,long / 2 + short / 2], [0,long]]);
 }
+
