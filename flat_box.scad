@@ -37,7 +37,7 @@ panel_cover_height = panel_height + thickness;
 // Use '!' to render a specific part, only 1 part at a time can be prepended with '!'
 
 // Print this first and slide over the front of the OTA to check for fit
-ring(2, 2, adapter_diameter);
+*ring(2, 2, adapter_diameter);
 
 // Infill: 10%
 ota_adapter(adapter_height, adapter_diameter, adapter_sides, panel_cover_diameter, panel_cover_height + thickness, text = adapter_text);
@@ -47,4 +47,4 @@ panel_cover(height = panel_cover_height, diameter = panel_cover_diameter, inner_
 
 // The base can be press fit against the panel cover
 // Infill: 20%
-!panel_base(diameter = panel_cover_diameter, height = thickness, cable_width = cable_width);
+panel_base(diameter = panel_cover_diameter, height = thickness, cable_width = cable_width);

@@ -54,7 +54,7 @@ module panel_cover(height, diameter, inner_diameter, thickness, offset, cable_wi
                 }
 }
 
-module panel_base(diameter, height, cable_width) {
+module panel_base(diameter, height, cable_width, thickness = 2) {
     translate([0, 0, height])
         difference() {
             ring(height, height/2, diameter - height * 2);
@@ -65,10 +65,10 @@ module panel_base(diameter, height, cable_width) {
     cylinder(h = height, d = diameter);
         
     // bottom cable cover
-    translate([0, diameter / 2 - 2.5, 0])
+    translate([0, diameter / 2 - (thickness + 0.5), 0])
         rotate([0,0,90])
             linear_extrude(2)
-                iso_trapazoid(16, cable_width + 4, 26);
+                iso_trapazoid(16, cable_width + thickness * 2, 26);
 }
 
 // Utility Modules
