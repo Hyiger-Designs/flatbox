@@ -7,7 +7,7 @@ Render STL using OpenSCAD:
 https://openscad.org/
 */
 
-use <./parts.scad>
+use <parts.scad>
 
 $fa = 1;
 $fs = 0.4;
