@@ -11,17 +11,17 @@ module ota_adapter(height, diameter, sides, outer_diameter, offset, scale = 0.8,
                 
                 font_size = 8;
                 translate([0,(outer_diameter / 2) * scale - font_size * 1.25, height - 2])
-                    rotate([180,180.0])
+                    rotate([180, 180])
                         label(text, font_size, 5);
             }
         }
         
-        // guide stubs for gluing 
+        // guide stubs for panel cover guide holes 
         stubs(x = diameter, z = -2, h = 4);
     }
 }
  
-module panel_cover(height, diameter, inner_diameter, thickness, offset, cable_width, cable_height) {
+module panel_cover(height, diameter, inner_diameter, thickness, offset, cable_width_short, cable_width_long, cable_length, cable_height) {
     translate([0, 0, offset])
         difference() {
             cylinder(h = height, d = diameter);
@@ -36,43 +36,39 @@ module panel_cover(height, diameter, inner_diameter, thickness, offset, cable_wi
                 // top cutout
                 cylinder(h = height + thickness, d = inner_diameter - thickness);
                 
-                // cable opening
+                // cable cutout
                 translate([0, (diameter - thickness) / 2, thickness / 2 + 1.5])
-                  cube([cable_width, thickness * 2, cable_height], center = true);
+                  cube([cable_width_long, thickness * 2, cable_height], center = true);
             }
         }
         
         // top cable cover
         translate([0, diameter / 2 - thickness - 0.5, thickness])
-            rotate([0,0,90])
-                difference() {
-                    linear_extrude(cable_height + thickness)
-                        iso_trapazoid(16, cable_width + thickness * 2, 26);
-                    translate([-1,0,-2])
-                        linear_extrude(cable_height + thickness)
-                            iso_trapazoid(12, cable_width, 28);
-                }
+            difference() {
+                iso_trapazoid(cable_width_short + thickness * 2, cable_width_long + thickness * 2, cable_length, cable_height + thickness);
+                translate([0, -1, -thickness])
+                    iso_trapazoid(cable_width_short, cable_width_long, cable_length + thickness, cable_height + thickness);
+            }
 }
 
-module panel_base(diameter, height, cable_width, thickness = 2) {
+module panel_base(diameter, height, cable_width_short, cable_width_long, cable_length, thickness = 2) {
     translate([0, 0, height])
         difference() {
             ring(height, height/2, diameter - height * 2);
             translate([0, diameter/2, height])
-                cube(cable_width, center = true);
+                cube(cable_width_long, center = true);
         }
     
     cylinder(h = height, d = diameter);
         
     // bottom cable cover
     translate([0, diameter / 2 - (thickness + 0.5), 0])
-        rotate([0,0,90])
-            linear_extrude(2)
-                iso_trapazoid(16, cable_width + thickness * 2, 26);
+        iso_trapazoid(cable_width_short + thickness * 2, cable_width_long + thickness * 2, cable_length, 2);
 }
 
 // Utility Modules
 
+// Text Label for OTA Adapter
 module label(string, size, height, font = "Liberation Sans", halign = "center", valign = "center") {
     linear_extrude(height) {
         text(text=string, size=size, font=font, halign = halign, valign = valign, $fn = 64);
@@ -93,6 +89,7 @@ module ngon3d(n, h, r) {
     circle(r=r, $fn=n);
 }
 
+// A thin ring
 module ring(width, height, diameter) {
     difference() {
         cylinder(h = height, d = diameter);
@@ -100,8 +97,10 @@ module ring(width, height, diameter) {
     }
 }      
 
-module iso_trapazoid(short, long, length, center = true) {
-    translate([0, center ? -long/2 : 0, 0])
-        polygon(points=[[0,0], [length,long / 2 - short / 2], [length,long / 2 + short / 2], [0,long]]);
+// 3D Isosceles Trapazoid
+module iso_trapazoid(short, long, length, height, center = true) {
+    linear_extrude(height)
+        translate([center ? -long/2 : 0,0,0])
+            polygon(points=[[0,0],[long / 2 - short / 2,length],[long / 2 + short / 2,length],[long,0]]);
 }
 
