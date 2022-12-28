@@ -40,7 +40,8 @@ panel_cover_height = panel_height + thickness;
 // Use '!' to render a specific part, only 1 part at a time can be prepended with '!'
 
 // Print this first and slide over the front of the OTA to check for fit
-ring(2, 2, adapter_diameter);
+// Remove "*" to render
+*ring(2, 2, adapter_diameter);
 
 // Infill: 10%
 color("FireBrick", 1.0)
