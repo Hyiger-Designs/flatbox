@@ -1,18 +1,19 @@
 
-module ota_adapter(height, diameter, sides, outer_diameter, offset, scale = 0.8, text = "")
+module ota_adapter(height, diameter, sides, offset, scale = 0.8, text = "")
 {
     translate([ 0, 0, offset ])
     {
         difference()
         {
-            scale([ scale, scale, 1 ]) ngon3d(sides, height, (outer_diameter / 2));
+            outer_radius = diameter * 0.8;
+            scale([ scale, scale, 1 ]) ngon3d(sides, height, outer_radius);
 
             union()
             {
                 translate([ 0, 0, -height / 2 ]) cylinder(h = height * 2, r = diameter / 2);
 
                 font_size = 8;
-                translate([ 0, (outer_diameter / 2) * scale - font_size * 1.25, height - 2 ]) rotate([ 180, 180 ])
+                translate([ 0, outer_radius * scale - font_size * 1.15, height - 2 ]) rotate([ 180, 180 ])
                     label(text, font_size, 5);
             }
         }

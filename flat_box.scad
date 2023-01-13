@@ -44,7 +44,7 @@ panel_cover_height = panel_height + thickness;
 *ring(2, 2, adapter_diameter);
 
 // Infill: 10%
-color("FireBrick", 1.0) ota_adapter(adapter_height, adapter_diameter, adapter_sides, panel_cover_diameter,
+color("FireBrick", 1.0) ota_adapter(adapter_height, adapter_diameter, adapter_sides, 
                                     panel_cover_height + thickness, text = adapter_text);
 
 // Infill: 20%
