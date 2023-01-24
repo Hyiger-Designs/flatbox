@@ -15,10 +15,10 @@ $fs = 0.4;
 // All measurements are in millimeters
 
 // OTA adapter - configuration for William Optics GT81
-adapter_diameter = 105; // Outside diameter of telescope, add 1mm for clearance
+adapter_diameter = 141; // Outside diameter of telescope, add 1mm for clearance
 adapter_height = 40;
 adapter_sides = 8;
-adapter_text = "GT81";
+adapter_text = "AT130";
 
 // Light Panel - configuration for Ellumiglow 6" AST060
 // https://www.ellumiglow.com/electroluminescence/astrophotography/astrophotography-6-flat-frame-el-panel-kit-new-2021-version
