@@ -15,8 +15,9 @@ $fs = 0.4;
 // All measurements are in millimeters
 
 // OTA adapter - configuration for William Optics GT81
-adapter_diameter = 105; // Outside diameter of telescope, add 1mm for clearance
+adapter_diameter = 141; // Outside diameter of telescope, add 1mm for clearance
 adapter_height = 40;
+adapter_sides = 8;
 adapter_sides = 12;
 adapter_text = "GT81";
 
@@ -44,7 +45,7 @@ panel_cover_height = panel_height + thickness;
 *ring(2, 2, adapter_diameter);
 
 // Infill: 10%
-color("FireBrick", 1.0) ota_adapter(adapter_height, adapter_diameter, adapter_sides, panel_cover_diameter,
+color("FireBrick", 1.0) ota_adapter(adapter_height, adapter_diameter, adapter_sides, 
                                     panel_cover_height + thickness, text = adapter_text);
 
 // Infill: 20%
