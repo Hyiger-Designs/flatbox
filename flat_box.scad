@@ -18,7 +18,6 @@ $fs = 0.4;
 adapter_diameter = 105; // Outside diameter of telescope, add 1mm for clearance
 adapter_height = 40;
 adapter_sides = 8;
-adapter_sides = 12;
 adapter_text = "GT81";
 
 // Light Panel - configuration for Ellumiglow 6" AST060
@@ -45,25 +44,13 @@ panel_cover_height = panel_height + thickness;
 *ring(2, 2, adapter_diameter);
 
 // Infill: 10%
-color("FireBrick", 1.0) ota_adapter(adapter_height, adapter_diameter, adapter_sides, 
-                                    panel_cover_height + thickness, text = adapter_text);
+*color("FireBrick", 1.0)
+    ota_adapter(adapter_height, adapter_diameter, adapter_sides, panel_cover_height + thickness, text = adapter_text);
 
 // Infill: 20%
-!color("Gray", 1.0) 
-intersection() {
-panel_cover(panel_cover_height, panel_cover_diameter, adapter_diameter, thickness, thickness,
-                               cable_width_short, cable_width_long, cable_length, cable_height);
-    translate([0,0,0])
-        cube([panel_cover_diameter,panel_cover_diameter, panel_cover_height+1]);
-    *translate([0,-panel_cover_diameter,0])
-        cube([panel_cover_diameter,panel_cover_diameter, panel_cover_height+1]);
-    *translate([-panel_cover_diameter,-panel_cover_diameter,0])
-        cube([panel_cover_diameter,panel_cover_diameter, panel_cover_height+1]);
-    *translate([-panel_cover_diameter,0,0])
-        cube([panel_cover_diameter,panel_cover_diameter, panel_cover_height+1]);
- 
-}
+color("Gray", 1.0) panel_cover(panel_cover_height, panel_cover_diameter, adapter_diameter, thickness, thickness,
+                                cable_width_short, cable_width_long, cable_length, cable_height, "1");
 
 // The base can be press fit against the panel cover
 // Infill: 20%
-color("White", 1.0) panel_base(panel_cover_diameter, thickness, cable_width_short, cable_width_long, cable_length);
+color("White", 1.0) panel_base(panel_cover_diameter, thickness, cable_width_short, cable_width_long, cable_length, quadrant = "1");

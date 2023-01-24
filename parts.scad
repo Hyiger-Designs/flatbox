@@ -1,4 +1,3 @@
-
 module ota_adapter(height, diameter, sides, offset, text = "", font_size = 8)
 {
     translate([ 0, 0, offset ])
@@ -26,55 +25,108 @@ module ota_adapter(height, diameter, sides, offset, text = "", font_size = 8)
 }
 
 module panel_cover(height, diameter, inner_diameter, thickness, offset, cable_width_short, cable_width_long,
-                   cable_length, cable_height)
+                   cable_length, cable_height, quadrant = "")
 {
-    translate([ 0, 0, offset ]) difference()
+    intersection()
     {
-        cylinder(h = height, d = diameter);
-
         union()
         {
-            // central cutout
-            translate([ 0, 0, -thickness ]) cylinder(h = height, d = diameter - thickness * 2);
+            translate([ 0, 0, offset ]) difference()
+            {
+                cylinder(h = height, d = diameter);
 
-            // guide hole cutouts
-            stubs(x = inner_diameter, z = -thickness + height / 2, h = height + 1, d = 2.2);
+                union()
+                {
+                    // central cutout
+                    translate([ 0, 0, -thickness ]) cylinder(h = height, d = diameter - thickness * 2);
 
-            // top cutout
-            cylinder(h = height + thickness, d = inner_diameter - thickness);
+                    // guide hole cutouts
+                    stubs(x = inner_diameter, z = -thickness + height / 2, h = height + 1, d = 2.2);
 
-            // cable cutout
-            translate([ 0, (diameter - thickness) / 2, thickness / 2 + 1.5 ])
-                cube([ cable_width_long, thickness * 2, cable_height ], center = true);
+                    // top cutout
+                    cylinder(h = height + thickness, d = inner_diameter - thickness);
+
+                    // cable cutout
+                    translate([ 0, (diameter - thickness) / 2, thickness / 2 + 1.5 ])
+                        cube([ cable_width_long, thickness * 2, cable_height ], center = true);
+                }
+            }
+
+            // top cable cover
+            translate([ 0, diameter / 2 - thickness - 0.5, thickness ]) difference()
+            {
+                iso_trapazoid(cable_width_short + thickness * 2, cable_width_long + thickness * 2, cable_length,
+                              cable_height + thickness);
+                translate([ 0, -1, -thickness ]) iso_trapazoid(cable_width_short, cable_width_long,
+                                                               cable_length + thickness, cable_height + thickness);
+            }
         }
-    }
 
-    // top cable cover
-    translate([ 0, diameter / 2 - thickness - 0.5, thickness ]) difference()
-    {
-        iso_trapazoid(cable_width_short + thickness * 2, cable_width_long + thickness * 2, cable_length,
-                      cable_height + thickness);
-        translate([ 0, -1, -thickness ])
-            iso_trapazoid(cable_width_short, cable_width_long, cable_length + thickness, cable_height + thickness);
+        // quadrant_cube(diameter, height, quadrant);
+
+        if (quadrant != "")
+        {
+            if (quadrant == "0")
+                translate([ 0, 0, 0 ]) cube([ diameter, diameter, height + 1 ]);
+            if (quadrant == "1")
+                translate([ 0, -diameter, 0 ]) cube([ diameter, diameter, height + 1 ]);
+            if (quadrant == "2")
+                translate([ -diameter, -diameter, 0 ]) cube([ diameter, diameter, height + 1 ]);
+            if (quadrant == "3")
+                translate([ -diameter, 0, 0 ]) cube([ diameter, diameter, height + 1 ]);
+        }
     }
 }
 
-module panel_base(diameter, height, cable_width_short, cable_width_long, cable_length, thickness = 2)
+module panel_base(diameter, height, cable_width_short, cable_width_long, cable_length, thickness = 2, quadrant = "")
 {
-    translate([ 0, 0, height ]) difference()
+    intersection()
     {
-        ring(height, height / 2, diameter - height * 2);
-        translate([ 0, diameter / 2, height ]) cube(cable_width_long, center = true);
+        union()
+        {
+            translate([ 0, 0, height ]) difference()
+            {
+                ring(height, height / 2, diameter - height * 2);
+                translate([ 0, diameter / 2, height ]) cube(cable_width_long, center = true);
+            }
+
+            cylinder(h = height, d = diameter);
+
+            // bottom cable cover
+            translate([ 0, diameter / 2 - (thickness + 0.5), 0 ])
+                iso_trapazoid(cable_width_short + thickness * 2, cable_width_long + thickness * 2, cable_length, 2);
+        }
+
+        if (quadrant != "")
+        {
+            if (quadrant == "0")
+                translate([ 0, 0, 0 ]) cube([ diameter, diameter, height + 1 ]);
+            if (quadrant == "1")
+                translate([ 0, -diameter, 0 ]) cube([ diameter, diameter, height + 1 ]);
+            if (quadrant == "2")
+                translate([ -diameter, -diameter, 0 ]) cube([ diameter, diameter, height + 1 ]);
+            if (quadrant == "3")
+                translate([ -diameter, 0, 0 ]) cube([ diameter, diameter, height + 1 ]);
+        }
     }
-
-    cylinder(h = height, d = diameter);
-
-    // bottom cable cover
-    translate([ 0, diameter / 2 - (thickness + 0.5), 0 ])
-        iso_trapazoid(cable_width_short + thickness * 2, cable_width_long + thickness * 2, cable_length, 2);
 }
 
 // Utility Modules
+
+module quadrant_cube(width, height, quadrant = "")
+{
+    if (quadrant != "")
+    {
+        if (quadrant == "0")
+            translate([ 0, 0, 0 ]) cube([ diameter, diameter, height + 1 ]);
+        if (quadrant == "1")
+            translate([ 0, -diameter, 0 ]) cube([ diameter, diameter, height + 1 ]);
+        if (quadrant == "2")
+            translate([ -diameter, -diameter, 0 ]) cube([ diameter, diameter, height + 1 ]);
+        if (quadrant == "3")
+            translate([ -diameter, 0, 0 ]) cube([ diameter, diameter, height + 1 ]);
+    }
+}
 
 // Text Label for OTA Adapter
 module label(string, size, height, font = "Liberation Sans", halign = "center", valign = "center")
