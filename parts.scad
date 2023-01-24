@@ -12,7 +12,7 @@ module ota_adapter(height, diameter, sides, outer_diameter, offset, scale = 0.8,
                 translate([ 0, 0, -height / 2 ]) cylinder(h = height * 2, r = diameter / 2);
 
                 font_size = 8;
-                translate([ 0, (outer_diameter / 2) * scale - font_size * 1.25, height - 2 ]) rotate([ 180, 180 ])
+                translate([ 0, (outer_diameter / 2) * scale - font_size * 1.1, height - 2 ]) rotate([ 180, 180 ])
                     label(text, font_size, 5);
             }
         }
