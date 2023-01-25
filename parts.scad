@@ -20,7 +20,7 @@ module ota_adapter(height, diameter, sides, offset, text = "", font_size = 8)
         }
 
         // guide stubs for panel cover guide holes
-        stubs(x = diameter, z = -2, h = 4);
+        posts(x = diameter, z = -2, h = 4);
     }
 }
 
@@ -41,7 +41,7 @@ module panel_cover(height, diameter, inner_diameter, thickness, offset, cable_wi
                     translate([ 0, 0, -thickness ]) cylinder(h = height, d = diameter - thickness * 2);
 
                     // guide hole cutouts
-                    stubs(x = inner_diameter, z = -thickness + height / 2, h = height + 1, d = 2.2);
+                    posts(x = inner_diameter, z = -thickness + height / 2, h = height + 1, d = 2.2);
 
                     // top cutout
                     cylinder(h = height + thickness, d = inner_diameter - thickness);
@@ -62,19 +62,8 @@ module panel_cover(height, diameter, inner_diameter, thickness, offset, cable_wi
             }
         }
 
-        // quadrant_cube(diameter, height, quadrant);
-
         if (quadrant != "")
-        {
-            if (quadrant == "0")
-                translate([ 0, 0, 0 ]) cube([ diameter, diameter, height + 1 ]);
-            if (quadrant == "1")
-                translate([ 0, -diameter, 0 ]) cube([ diameter, diameter, height + 1 ]);
-            if (quadrant == "2")
-                translate([ -diameter, -diameter, 0 ]) cube([ diameter, diameter, height + 1 ]);
-            if (quadrant == "3")
-                translate([ -diameter, 0, 0 ]) cube([ diameter, diameter, height + 1 ]);
-        }
+            quadrant_slice(diameter, height, quadrant);
     }
 }
 
@@ -98,34 +87,22 @@ module panel_base(diameter, height, cable_width_short, cable_width_long, cable_l
         }
 
         if (quadrant != "")
-        {
-            if (quadrant == "0")
-                translate([ 0, 0, 0 ]) cube([ diameter, diameter, height + 1 ]);
-            if (quadrant == "1")
-                translate([ 0, -diameter, 0 ]) cube([ diameter, diameter, height + 1 ]);
-            if (quadrant == "2")
-                translate([ -diameter, -diameter, 0 ]) cube([ diameter, diameter, height + 1 ]);
-            if (quadrant == "3")
-                translate([ -diameter, 0, 0 ]) cube([ diameter, diameter, height + 1 ]);
-        }
+            quadrant_slice(diameter, height, quadrant);
     }
 }
 
 // Utility Modules
 
-module quadrant_cube(width, height, quadrant = "")
+module quadrant_slice(width, height, quadrant = "")
 {
-    if (quadrant != "")
-    {
-        if (quadrant == "0")
-            translate([ 0, 0, 0 ]) cube([ diameter, diameter, height + 1 ]);
-        if (quadrant == "1")
-            translate([ 0, -diameter, 0 ]) cube([ diameter, diameter, height + 1 ]);
-        if (quadrant == "2")
-            translate([ -diameter, -diameter, 0 ]) cube([ diameter, diameter, height + 1 ]);
-        if (quadrant == "3")
-            translate([ -diameter, 0, 0 ]) cube([ diameter, diameter, height + 1 ]);
-    }
+    if (quadrant == "0")
+        translate([ 0, 0, 0 ]) cube([ width, width, height + 1 ]);
+    if (quadrant == "1")
+        translate([ 0, -width, 0 ]) cube([ width, width, height + 1 ]);
+    if (quadrant == "2")
+        translate([ -width, -width, 0 ]) cube([ width, width, height + 1 ]);
+    if (quadrant == "3")
+        translate([ -width, 0, 0 ]) cube([ width, width, height + 1 ]);
 }
 
 // Text Label for OTA Adapter
@@ -138,7 +115,7 @@ module label(string, size, height, font = "Liberation Sans", halign = "center", 
 }
 
 // Posts or holes to aid in aligning parts for gluing
-module stubs(x, z, h = 2, d = 2)
+module posts(x, z, h = 2, d = 2)
 {
     stub_x = x / 2 + d * 2;
     for (x1 = [ -stub_x, stub_x ])
