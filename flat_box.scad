@@ -22,8 +22,12 @@ adapter_text = "GT81";
 
 // Light Panel - configuration for Ellumiglow 6" AST060
 // https://www.ellumiglow.com/electroluminescence/astrophotography/astrophotography-6-flat-frame-el-panel-kit-new-2021-version
-panel_diameter = 254;
+// 6" panel: 164mm
+// 8" panel: 209mm
+// 10" panel: 263mm
+panel_diameter = 164;
 panel_height = 5; // Include space for acrylic cover
+
 cable_width_short = 12;
 cable_width_long = 22;
 cable_length = 26;
@@ -49,8 +53,8 @@ panel_cover_height = panel_height + thickness;
 
 // Infill: 20%
 color("Gray", 1.0) panel_cover(panel_cover_height, panel_cover_diameter, adapter_diameter, thickness, thickness,
-                                cable_width_short, cable_width_long, cable_length, cable_height,"1");
+                                cable_width_short, cable_width_long, cable_length, cable_height, "1");
 
 // The base can be press fit against the panel cover
 // Infill: 20%
-color("White", 1.0) panel_base(panel_cover_diameter, thickness, cable_width_short, cable_width_long, cable_length);
+color("White", 1.0) panel_base(panel_cover_diameter, thickness, cable_width_short, cable_width_long, cable_length, thickness, "1");
