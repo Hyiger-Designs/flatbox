@@ -48,13 +48,17 @@ panel_cover_height = panel_height + thickness;
 *ring(2, 2, adapter_diameter);
 
 // Infill: 10%
-*color("FireBrick", 1.0)
+color("FireBrick", 1.0)
     ota_adapter(adapter_height, adapter_diameter, adapter_sides, panel_cover_height + thickness, text = adapter_text);
+
+// For sizes larger than the print bed, set quarter to 0 - 3 to print each 1/4 of the panel base and cover
+quarter = "";
 
 // Infill: 20%
 color("Gray", 1.0) panel_cover(panel_cover_height, panel_cover_diameter, adapter_diameter, thickness, thickness,
-                                cable_width_short, cable_width_long, cable_length, cable_height, "1");
+                               cable_width_short, cable_width_long, cable_length, cable_height, quarter);
 
 // The base can be press fit against the panel cover
 // Infill: 20%
-color("White", 1.0) panel_base(panel_cover_diameter, thickness, cable_width_short, cable_width_long, cable_length, thickness, "1");
+color("White", 1.0)
+    panel_base(panel_cover_diameter, thickness, cable_width_short, cable_width_long, cable_length, thickness, quarter);

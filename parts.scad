@@ -14,7 +14,7 @@ module ota_adapter(height, diameter, sides, offset, text = "", font_size = 8)
 
                 // Inset text
                 width = outer_radius - (diameter / 2);
-                translate([ 0, outer_radius + font_size - (width * 1.05), height - 2 ]) rotate([ 180, 180 ])
+                translate([ 0, outer_radius + font_size - (width * 1.15), height - 2 ]) rotate([ 180, 180 ])
                     label(text, font_size, 5);
             }
         }
@@ -25,7 +25,7 @@ module ota_adapter(height, diameter, sides, offset, text = "", font_size = 8)
 }
 
 module panel_cover(height, diameter, inner_diameter, thickness, offset, cable_width_short, cable_width_long,
-                   cable_length, cable_height, quadrant = "")
+                   cable_length, cable_height, quarter = "")
 {
     intersection()
     {
@@ -62,12 +62,12 @@ module panel_cover(height, diameter, inner_diameter, thickness, offset, cable_wi
             }
         }
 
-        if (quadrant != "")
-            quadrant_slice(diameter, height, quadrant);
+        if (quarter != "")
+            quarter_slice(diameter, height, quarter);
     }
 }
 
-module panel_base(diameter, height, cable_width_short, cable_width_long, cable_length, thickness = 2, quadrant = "")
+module panel_base(diameter, height, cable_width_short, cable_width_long, cable_length, thickness = 2, quarter = "")
 {
     intersection()
     {
@@ -86,22 +86,23 @@ module panel_base(diameter, height, cable_width_short, cable_width_long, cable_l
                 iso_trapazoid(cable_width_short + thickness * 2, cable_width_long + thickness * 2, cable_length, 2);
         }
 
-        if (quadrant != "")
-            quadrant_slice(diameter, height, quadrant);
+        if (quarter != "")
+            quarter_slice(diameter, height, quarter);
     }
 }
 
 // Utility Modules
 
-module quadrant_slice(width, height, quadrant = "")
+// Used with intersect to slice a part into quarters
+module quarter_slice(width, height, quarter = "")
 {
-    if (quadrant == "0")
+    if (quarter == "0")
         translate([ 0, 0, 0 ]) cube([ width, width, height + 1 ]);
-    if (quadrant == "1")
+    if (quarter == "1")
         translate([ 0, -width, 0 ]) cube([ width, width, height + 1 ]);
-    if (quadrant == "2")
+    if (quarter == "2")
         translate([ -width, -width, 0 ]) cube([ width, width, height + 1 ]);
-    if (quadrant == "3")
+    if (quarter == "3")
         translate([ -width, 0, 0 ]) cube([ width, width, height + 1 ]);
 }
 
