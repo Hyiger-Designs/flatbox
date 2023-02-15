@@ -4,7 +4,7 @@ module ota_adapter(height, diameter, sides, offset, text = "", font_size = 8)
     {
         difference()
         {
-            outer_radius = diameter * 0.64;
+            outer_radius = (diameter / 2) * 1.2;
             ngon3d(sides, height, outer_radius);
 
             union()
@@ -14,7 +14,7 @@ module ota_adapter(height, diameter, sides, offset, text = "", font_size = 8)
 
                 // Inset text
                 width = outer_radius - (diameter / 2);
-                translate([ 0, outer_radius + font_size - (width * 1.15), height - 2 ]) rotate([ 180, 180 ])
+                translate([ 0, outer_radius + font_size - width - 1, height - 2 ]) rotate([ 180, 180 ])
                     label(text, font_size, 5);
             }
         }
